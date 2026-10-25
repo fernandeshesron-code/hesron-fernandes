@@ -1,30 +1,22 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #f5f7fb;
-  color: #111827;
-  font-family: Arial, Helvetica, sans-serif;
-}
+import { createClient } from "@supabase/supabase-js";
 
-* {
-  box-sizing: border-box;
-}
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-main {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-}
+export const supabase =
+  supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
-h1 {
-  margin: 0;
-}
+export async function getPosts() {
+  if (!supabase) {
+    return [];
+  }
 
-code {
-  background: #e5e7eb;
-  padding: 0.15rem 0.35rem;
-  border-radius: 0.25rem;
+  const { data, error } = await supabase.from("posts").select("id,title,content,created_at").order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Erro ao buscar posts:", error.message);
+    return [];
+  }
+
+  return data ?? [];
 }

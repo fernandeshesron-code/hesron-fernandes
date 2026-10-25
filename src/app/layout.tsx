@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Hesron Fernandes",
-  description: "App inicial com Next.js e Supabase",
+  description: "Portfólio e projeto inicial com Next.js e Supabase",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
